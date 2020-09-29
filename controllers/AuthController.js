@@ -1,8 +1,11 @@
 const { response, json } = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const User = require('../models/UserModel');
 
+///////////////////////////////////////////////////
+//Génère un token lors de l'ajout d'un utilisateur
+///////////////////////////////////////////////////
 const genereteToken = (uid, name) => {
     return new Promise((resolve, reject) => {
         const payload = { uid, name };
@@ -16,6 +19,9 @@ const genereteToken = (uid, name) => {
     });
 }
 
+//////////////////////////////
+//Test la validité d'un token
+//////////////////////////////
 const validateToken = (req, res, next) => {
     const token = req.header('x-token');
     if (!token) {
@@ -31,6 +37,9 @@ const validateToken = (req, res, next) => {
     next()
 }
 
+////////////////////////////////////////////
+//Encrypte le mot de passe lors du register
+////////////////////////////////////////////
 const encryptPassword = async(password) => {
     if (password) {
         const salt = bcrypt.genSaltSync();
@@ -40,6 +49,9 @@ const encryptPassword = async(password) => {
     }
 }
 
+//////////////////////////////////
+//Enregistrement d'un utilisateur
+//////////////////////////////////
 const register = async(req, res) => {
     const user = req.body;
     const email = user.email;
@@ -54,6 +66,9 @@ const register = async(req, res) => {
     return res.status(200).json({ name: user.name, uid: user._id, token: token })
 }
 
+/////////////////////////////
+//Connexion d'un utilisateur
+/////////////////////////////
 const login = async(req, res) => {
     try {
         const { email, password } = req.body;

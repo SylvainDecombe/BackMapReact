@@ -6,45 +6,28 @@ const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const dbconnect = require('./core/config');
 
-const Customer = require('./models/customer');
-const auth = require('./routes/auth');
-const { validateToken } = require('./controllers/index');
+/////////////////////////////
+//Import des routes de l'API
+/////////////////////////////
+const auth = require('./routes/AuthRouter');
+const cust = require('./routes/CustomerRouter');
 
 dotenv.config();
 dbconnect.dbconnect();
 
 const app = express();
-const router = express.Router();
 
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
 
-
+//////////////////////////
+//Routes racines de l'API
+//////////////////////////
 app.use('/api/auth', auth);
+app.use('/api', cust);
 
-
-app.get('/customers', [validateToken], async(req, res, next) => {
-    try {
-        const customers = await Customer.find();
-        return res.json(customers);
-    } catch (error) {
-        return res.send({ status: 'fail', message: error })
-    }
-});
-/*
-router.post('/customers', async (req, res, next)=> {
-	const customers = Customer({
-		name: req.body.name
-	})
-	try {
-		const saveCustomers = await customers.save();
-		return res.json(saveCustomers);
-	}catch(error){
-		return res.send({ status :'fail', message: error})
-	}
-});
-
-app.use('/', router );
-*/
+//////////////////////////////
+//Configuration port d'écoute
+//////////////////////////////
 app.listen(3000, () => console.log('Server starting'));
