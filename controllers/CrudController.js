@@ -46,7 +46,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    crud.findAById(id)
+    crud.findById(id)
     .then(data =>{
         if (!data)
         res.status(404).send({ message: "Aucun résultat par ID ! + id"});
@@ -67,7 +67,7 @@ exports.update = (req, res) => {
     }
     const id = req.params.id;
 
-    crud.findAByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    crud.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then(data => {
         if (!data){
             res.status(404).send({
@@ -86,7 +86,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res =>{
     const id = req.params.id;
 
-    crud.findAByIdAndRemove(id, { useFindAndModify: false})
+    crud.findByIdAndRemove(id, { useFindAndModify: false})
     .then(data => {
         if (!data) {
             res.status(404).send({

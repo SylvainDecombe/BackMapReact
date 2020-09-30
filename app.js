@@ -17,10 +17,10 @@ dbconnect.dbconnect();
 
 const app = express();
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(helmet());
 app.use(bodyParser.json());
-
+app.use(bodyParser.urlencoded({ extended : true }));
 //////////////////////////
 //Routes racines de l'API
 //////////////////////////
@@ -30,4 +30,4 @@ app.use('/api', cust);
 //////////////////////////////
 //Configuration port d'écoute
 //////////////////////////////
-app.listen(3000, () => console.log('Server starting'));
+app.listen(8081, () => console.log('Server starting'));
