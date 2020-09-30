@@ -26,7 +26,6 @@ app.use(bodyParser.urlencoded({ extended : true }));
 //////////////////////////
 app.use('/api/auth', auth);
 app.use('/api', cust);
-
 //////////////////////////////
 //Configuration port d'écoute
 //////////////////////////////
