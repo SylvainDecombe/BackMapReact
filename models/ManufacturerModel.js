@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const UserModel = Schema({
+const ManufacturerModel = Schema({
 
     firstname: {
 		type: String,
@@ -25,16 +25,16 @@ const UserModel = Schema({
 	adresse: {
 		type: String,
 		required: true
-    },
-    postal: {
+	},
+	postal: {
 		type: Number,
 		required: true
-    },
-    ville: {
+	},
+	ville: {
 		type: String,
 		required: true
 	}
 
 });
 
-module.exports = model('User', UserModel);
+module.exports = model('Manufacturer', ManufacturerModel);
