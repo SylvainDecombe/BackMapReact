@@ -11,6 +11,8 @@ const dbconnect = require('./core/config');
 /////////////////////////////
 const auth = require('./routes/AuthRouter');
 const cust = require('./routes/CustomerRouter');
+const manu = require('./routes/ManufacturerRouter');
+//const user = require('./routes/UserRouter');
 
 dotenv.config();
 dbconnect.dbconnect();
@@ -20,12 +22,12 @@ const app = express();
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended : true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 //////////////////////////
 //Routes racines de l'API
 //////////////////////////
 app.use('/api/auth', auth);
-app.use('/api', cust);
+app.use('/api', [cust, manu, user]);
 //////////////////////////////
 //Configuration port d'écoute
 //////////////////////////////
