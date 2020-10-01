@@ -33,6 +33,14 @@ const ManufacturerModel = Schema({
     siret: {
         type: String,
         required: true
+    },
+    posx: {
+        type: String,
+        required: true
+    },
+    posy: {
+        type: String,
+        required: true
     }
 
 });

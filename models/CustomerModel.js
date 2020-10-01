@@ -21,7 +21,19 @@ const CustomerModel = Schema({
         type: Number,
         required: true
     },
+    pays: {
+        type: String,
+        required: true
+    },
     ville: {
+        type: String,
+        required: true
+    },
+    posx: {
+        type: String,
+        required: true
+    },
+    posy: {
         type: String,
         required: true
     }
