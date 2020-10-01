@@ -1,46 +1,15 @@
 const { json } = require('express');
 const Customer = require('../models/CustomerModel');
 const db = require('../core/mongoose');
-const client = db.client;
-
-/////////////////////////////////////
-//Récupération de customer par token
-/////////////////////////////////////
-const getByToken = async(req, res, next) => {
-    try {
-        const customers = await Customer.find();
-        return res.json(customers);
-    } catch (error) {
-        console.log(error);
-        return res.send({ status: 'fail', message: error })
-    }
-}
-
-/*
-const postCustomer = async (req, res, next)=> {
-	const customers = Customer({
-		name: req.body.name
-	})
-	try {
-		const saveCustomers = await customers.save();
-		return res.json(saveCustomers);
-	}catch(error){
-		return res.send({ status :'fail', message: error})
-	}
-});
-*/
-
-module.exports = {  getByToken };
 
 
-
-exports.create = (req, res) => {
+const create = (req, res) => {
     if (!req.body.nom) {
         res.status(400).send({ message: "Le champ le doit pas être vide !" });
         return;
     }
     // Creation utilisateur
-    const client = new client({
+    const client = new Customer({
         prenom: req.body.prenom,
         nom: req.body.nom,
         tel: req.body.tel,
@@ -65,9 +34,10 @@ exports.create = (req, res) => {
         });
 };
 
-exports.findAll = (req, res) => {
+const findAll = (req, res) => {
 
-    client.findAll()
+    const client = Customer
+        .find()
         .then(data => {
             res.send(data);
         })
@@ -79,7 +49,7 @@ exports.findAll = (req, res) => {
 };
 
 //Recherche par id
-exports.findOne = (req, res) => {
+const findOne = (req, res) => {
     const id = req.params.id;
 
     client.findById(id)
@@ -95,7 +65,7 @@ exports.findOne = (req, res) => {
 
 //MAJ par id
 
-exports.update = (req, res) => {
+const update = (req, res) => {
     if (!req.body) {
         return res.status(400).send({
             message: "Les données n'ont pas été mises à jour !"
@@ -119,7 +89,7 @@ exports.update = (req, res) => {
 };
 
 //Supression CRUD par ID
-exports.deleteCustomer = (req, res => {
+const deleteCustomer = (req, res) => {
     const id = req.params.id;
 
     client.findByIdAndRemove(id, { useFindAndModify: false })
@@ -139,10 +109,10 @@ exports.deleteCustomer = (req, res => {
                 message: "Erreur, impossible de supprimer l'élément par id"
             });
         });
-});
+}
 
 //Tous supprimer
-exports.deleteAll = (req, res => {
+const deleteAll = (req, res) => {
     client.deleteMany({})
         .then(data => {
             res.send({
@@ -154,4 +124,6 @@ exports.deleteAll = (req, res => {
                 message: err.message || "Erreur, impossible de supprimer tous les élements !"
             });
         });
-});
+};
+
+module.exports = { create, update, findAll, deleteCustomer };

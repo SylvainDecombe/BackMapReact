@@ -1,8 +1,14 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017', {
-    useNewUrlParse: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
-});
+const dbconnect = async() => {
+    try {
+        mongoose.connect(process.env.DB_CONNECT, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            },
+            () => console.log("Mongo ok")
+        );
+    } catch (error) {
+        throw new Error('Mongo KO');
+    }
+}

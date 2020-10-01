@@ -1,14 +1,14 @@
-const db = require('../models/mongoose');
-const manufacturer = db.manufacturer;
+const db = require('../core/mongoose');
+const Manufacturer = require('../models/ManufacturerModel');
 
-exports.create = (req, res) => {
+const create = (req, res) => {
     if (!req.body.nom) {
         res.status(400).send({ message: "Le champ le doit pas être vide !" });
         return;
     }
 
     // Creation utilisateur
-    const manufacturer = new manufacturer({
+    const manufacturer = new Manufacturer({
         nom: req.body.nom,
         email: req.body.email,
         tel: req.body.tel,
@@ -34,8 +34,10 @@ exports.create = (req, res) => {
         });
 };
 
-exports.findAll = (req, res) => {
-    manufacturer.find(condition)
+const findAll = (req, res) => {
+
+    const manufacturer = Manufacturer
+        .find()
         .then(data => {
             res.send(data);
         })
@@ -47,10 +49,11 @@ exports.findAll = (req, res) => {
 };
 
 //Recherche par id
-exports.findOne = (req, res) => {
+const findOne = (req, res) => {
     const id = req.params.id;
 
-    manufacturer.findById(id)
+    const manufacturer = Manufacturer
+        .findById(id)
         .then(data => {
             if (!data)
                 res.status(404).send({ message: "Aucun résultat par ID ! + id" });
@@ -63,7 +66,7 @@ exports.findOne = (req, res) => {
 
 //MAJ par id
 
-exports.update = (req, res) => {
+const update = (req, res) => {
     if (!req.body) {
         return res.status(400).send({
             message: "Les données n'ont pas été mises à jour !"
@@ -71,7 +74,8 @@ exports.update = (req, res) => {
     }
     const id = req.params.id;
 
-    manufacturer.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    const manufacturer = Manufacturer
+        .findByIdAndUpdate(id, req.body, { useFindAndModify: false })
         .then(data => {
             if (!data) {
                 res.status(404).send({
@@ -87,10 +91,11 @@ exports.update = (req, res) => {
 };
 
 //Supression CRUD par ID
-exports.deleteManufacturer = (req, res => {
+const deleteManufacturer = (req, res) => {
     const id = req.params.id;
 
-    manufacturer.findByIdAndRemove(id, { useFindAndModify: false })
+    const manufacturer = Manufacturer
+        .findByIdAndRemove(id, { useFindAndModify: false })
         .then(data => {
             if (!data) {
                 res.status(404).send({
@@ -107,10 +112,10 @@ exports.deleteManufacturer = (req, res => {
                 message: "Erreur, impossible de supprimer l'élément par id"
             });
         });
-});
+};
 
 //Tous supprimer
-exports.deleteAll = (req, res => {
+const deleteAll = (req, res) => {
     manufacturer.deleteMany({})
         .then(data => {
             res.send({
@@ -122,4 +127,7 @@ exports.deleteAll = (req, res => {
                 message: err.message || "Erreur, impossible de supprimer tous les élements !"
             });
         });
-});
+};
+
+
+module.exports = { create, update, findAll, deleteManufacturer };

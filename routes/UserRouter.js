@@ -1,16 +1,14 @@
-module.exports = app => {
-    const user = require ("../controllers/UserController.js");
+const { Router } = require('express');
+const { create, update, deleteUser, findAll } = require('../controllers/UserController');
+const router = Router();
 
-    var router = require ("express").Router();
+//creation utilisateur
+router.post("/user", create);
+//MAJ profile
+router.put("/user/:id", update);
+//supression par id
+router.delete("/user/:id", deleteUser);
+//supprimer tous utilisateur
+router.get("/user", findAll);
 
-    //creation utilisateur
-    router.post("/", crud.create);
-    //MAJ profile
-    router.put("/:id", crud.update);
-    //supression par id
-    router.delete("/:id", crud.delete);
-    //supprimer tous utilisateur
-    router.get("/", crud.deleteAll);
-    
-    app.use("/api/crud", router);
-};
+module.exports = router;
