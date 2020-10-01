@@ -1,5 +1,5 @@
 const db = require ('../models/mongoose');
-const crud = db.crud;
+const user = db.user;
 
 exports.create = (req, res) => {
     if (!req.body.nom)
@@ -9,15 +9,15 @@ exports.create = (req, res) => {
     }
 
 // Creation utilisateur
-const crud = new crud({
+const user = new user({
     nom: req.body.nom,
     desc: req.body.desc,
     published: req.body.published ? req.body.published : false
 });
 
 // Sauvegarde utilisateur MongoDB
-crud
-    .save(crud)
+user
+    .save(user)
     .then(data => {
         res.send(data);
     })
@@ -32,7 +32,7 @@ exports.findAll = (req, res) => {
     const title = req.query.title;
     var condition = title ? { title: {$regex: new RegExp(title), $options: "o"}} : {};
 
-    crud.find(condition)
+    user.find(condition)
     .then(data => {
         res.send(data);
     })
@@ -46,7 +46,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    crud.findById(id)
+    user.findById(id)
     .then(data =>{
         if (!data)
         res.status(404).send({ message: "Aucun résultat par ID ! + id"});
@@ -67,7 +67,7 @@ exports.update = (req, res) => {
     }
     const id = req.params.id;
 
-    crud.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    user.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then(data => {
         if (!data){
             res.status(404).send({
@@ -86,7 +86,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res =>{
     const id = req.params.id;
 
-    crud.findByIdAndRemove(id, { useFindAndModify: false})
+    usesr.findByIdAndRemove(id, { useFindAndModify: false})
     .then(data => {
         if (!data) {
             res.status(404).send({
@@ -107,7 +107,7 @@ exports.delete = (req, res =>{
 
 //Tous supprimer
 exports.deleteAll = (req, res => {
-    crud.deleteMany({})
+    user.deleteMany({})
     .then(data => {
         res.send({
             message : "{data.deletedCount} Tous a été supprimé avec succès !"
