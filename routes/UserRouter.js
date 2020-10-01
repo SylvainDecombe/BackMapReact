@@ -4,13 +4,13 @@ module.exports = app => {
     var router = require ("express").Router();
 
     //creation utilisateur
-    router.post("/", crud.create);
+    router.post("/", create);
     //MAJ profile
-    router.put("/:id", crud.update);
+    router.put("/:id", update);
     //supression par id
-    router.delete("/:id", crud.delete);
+    router.de("/:id", delete);
     //supprimer tous utilisateur
-    router.get("/", crud.deleteAll);
+    router.get("/", deleteAll);
     
-    app.use("/api/crud", router);
+    app.use("/api/user", router);
 };

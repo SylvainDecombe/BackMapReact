@@ -1,7 +1,8 @@
 const db = require ('../models/mongoose');
+const UserModel = require('../models/UserModel');
 const user = db.user;
 
-exports.create = (req, res) => {
+const create = (req, res) => {
     if (!req.body.nom)
     {
         res.status(400).send({ message : "Le champ le doit pas être vide !"});
@@ -11,8 +12,15 @@ exports.create = (req, res) => {
 // Creation utilisateur
 const user = new user({
     nom: req.body.nom,
-    desc: req.body.desc,
-    published: req.body.published ? req.body.published : false
+    motdepasse: req.body.motdepasse,
+    email: req.body.email,
+    tel: req.body.tel,
+    adresse: req.body.adresse,
+    postal: req.body.postal,
+    ville: req.body.ville,
+    pays: req.body.pays,
+    posx: req.body.posx,
+    posy: req.body.posy
 });
 
 // Sauvegarde utilisateur MongoDB
@@ -28,10 +36,7 @@ user
   });
 };
 
-exports.findAll = (req, res) => {
-    const title = req.query.title;
-    var condition = title ? { title: {$regex: new RegExp(title), $options: "o"}} : {};
-
+ const findAll = (req, res) => {
     user.find(condition)
     .then(data => {
         res.send(data);
@@ -43,7 +48,7 @@ exports.findAll = (req, res) => {
 };
 
 //Recherche par id
-exports.findOne = (req, res) => {
+const findOne = (req, res) => {
     const id = req.params.id;
 
     user.findById(id)
@@ -59,7 +64,7 @@ exports.findOne = (req, res) => {
 
 //MAJ par id
 
-exports.update = (req, res) => {
+const update = (req, res) => {
     if (!req.body){
         return res.status(400).send({
             message : "Les données n'ont pas été mises à jour !"
@@ -83,10 +88,10 @@ exports.update = (req, res) => {
 };
 
 //Supression CRUD par ID
-exports.delete = (req, res =>{
+const delete = (req, res =>{
     const id = req.params.id;
 
-    usesr.findByIdAndRemove(id, { useFindAndModify: false})
+    user.findByIdAndRemove(id, { useFindAndModify: false})
     .then(data => {
         if (!data) {
             res.status(404).send({
@@ -106,7 +111,7 @@ exports.delete = (req, res =>{
 });
 
 //Tous supprimer
-exports.deleteAll = (req, res => {
+const deleteAll = (req, res => {
     user.deleteMany({})
     .then(data => {
         res.send({
@@ -120,3 +125,4 @@ exports.deleteAll = (req, res => {
     });
 });
 
+module.exports ={ create, update, findAll, deleteUser};
