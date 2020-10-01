@@ -1,7 +1,8 @@
 module.exports = app => {
-    const manufacturer = require ("../controllers/ManufacturerController.js");
+    const manufacturer = require("../controllers/ManufacturerController.js");
+    const { create, update, deleteManufacturer, findAll } = require('../controllers/ManufacturerController');
 
-    var router = require ("express").Router();
+    var router = require("express").Router();
 
     //FABRICANT
     //creation utilisateur
@@ -12,6 +13,5 @@ module.exports = app => {
     router.delete("/manufacturer/:id", deleteManufacturer);
     //supprimer tous utilisateur
     router.get("/manufacturer/", findAll);
-    
-    app.use("/api/manufacturer", router);
+
 };
