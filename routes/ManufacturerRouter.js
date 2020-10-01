@@ -5,13 +5,13 @@ module.exports = app => {
 
     //FABRICANT
     //creation utilisateur
-    router.post("/manufacturer/", manufacturer.create);
+    router.post("/manufacturer/", create);
     //MAJ profile
-    router.get("/manufacturer/:id", manufacturer.update);
+    router.put("/manufacturer/:id", update);
     //supression par id
-    router.get("/manufacturer/:id", manufacturer.delete);
+    router.delete("/manufacturer/:id", deleteManufacturer);
     //supprimer tous utilisateur
-    router.get("/manufacturer/", manufacturer.deleteAll);
+    router.get("/manufacturer/", findAll);
     
     app.use("/api/manufacturer", router);
 };
