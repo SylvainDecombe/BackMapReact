@@ -8,8 +8,9 @@ router.get("/manufacturer", findAll);
 //creation manufacturers
 router.post("/manufacturer", create);
 //MAJ profile
-router.put("/manufacturer/:id", update);
+router.put("/manufacturer", update);
 //supression par id
 router.delete("/manufacturer/:id", deleteManufacturer);
+
 
 module.exports = router;

@@ -77,54 +77,60 @@ const findOne = (req, res) => {
 //////////////////////////////////////////////
 //Modification des informations d'un Customer
 //////////////////////////////////////////////
-const update = (req, res) => {
-    if (!req.body) {
+const update = async(req, res) => {
+    const id = req.body.id;
+    const body = req.body;
+    if (id) {
+        try {
+            const customerToUpdate = await Customer.findOne({ _id: id });
+            if (customerToUpdate) {
+                delete body._id;
+                await Customer.findOneAndUpdate({ _id: id }, body);
+                const updatedCustomer = await Customer.findOne({ _id: id });
+                return res.json(updatedCustomer);
+            } else {
+                return res.status(404).send({
+                    message: 'Customer not found.'
+                });
+            }
+        } catch (e) {
+            return res.status(500).send({
+                message: e
+            });
+        }
+    } else {
         return res.status(400).send({
-            message: "Les données n'ont pas été mises à jour !"
+            message: 'No ID specified.'
         });
     }
-    const id = req.params.id;
-
-    const client = Customer
-        .findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-        .then(data => {
-            if (!data) {
-                res.status(404).send({
-                    message: "Impossible d'effectuer la MAJ"
-                });
-            } else res.send({ message: "Le pass CRUD a bien été MAJ !" });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Erreur de MAJ.."
-            });
-        });
 };
 
 ///////////////////////////
 //Supression d'un Customer
 ///////////////////////////
-const deleteCustomer = (req, res) => {
+const deleteCustomer = async function(req, res) {
     const id = req.params.id;
-
-    const client = Customer
-        .findByIdAndRemove(id, { useFindAndModify: false })
-        .then(data => {
-            if (!data) {
-                res.status(404).send({
-                    message: "Erreur s'est produit lors de la supression d'un id !"
-                });
+    if (id) {
+        try {
+            const customerToDelete = await Customer.findOne({ _id: id });
+            if (customerToDelete) {
+                await customerToDelete.delete();
+                return res.sendStatus(200);
             } else {
-                res.send({
-                    message: "La supression a été un succès !"
+                return res.status(404).send({
+                    message: 'Customer not found.'
                 });
             }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Erreur, impossible de supprimer l'élément par id"
+        } catch (e) {
+            return res.status(500).send({
+                message: e
             });
+        }
+    } else {
+        return res.status(400).send({
+            message: 'No ID specified.'
         });
-}
+    }
+};
 
 module.exports = { create, update, findAll, deleteCustomer };

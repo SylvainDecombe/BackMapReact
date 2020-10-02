@@ -7,7 +7,7 @@ const router = Router();
 //creation customer
 router.post("/customer/", create);
 //MAJ profile
-router.put("/customer/:id", update);
+router.put("/customer", update);
 //supression par id
 router.delete("/customer/:id", deleteCustomer);
 //afficher tous les customers

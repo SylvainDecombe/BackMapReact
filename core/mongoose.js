@@ -6,10 +6,10 @@ const Customer = require('../models/CustomerModel');
 
 exports.populateUsers = async function(res) {
     try {
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 25; i++) {
             const user = new User();
             user.nom = faker.name.firstName();
-            user.motdepasse = faker.password.password();
+            user.password = faker.password.password();
             user.email = faker.internet.email().toLowerCase();
             user.tel = faker.phone.phoneNumber();
             user.adresse = faker.address.streetName();
@@ -29,7 +29,7 @@ exports.populateUsers = async function(res) {
 
 exports.populateCustomers = async function(res) {
     try {
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 25; i++) {
             const customers = new Customers();
             customers.prenom = faker.name.firstName();
             customers.nom = faker.name.lastName();
@@ -40,7 +40,6 @@ exports.populateCustomers = async function(res) {
             customers.ville = faker.address.city();
             customers.posx = faker.address.latitude();
             customers.posy = faker.address.longitude();
-            const TYPE = ["CUSTOMER"];
             await customers.save();
         }
         return true;
@@ -51,7 +50,7 @@ exports.populateCustomers = async function(res) {
 
 exports.populateManufacturer = async function(res) {
     try {
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 25; i++) {
             const Manufacturer = new Manufacturer();
             Manufacturer.nom = faker.company.companyName();
             Manufacturer.email = faker.internet.email().toLowerCase();
@@ -63,7 +62,6 @@ exports.populateManufacturer = async function(res) {
             Manufacturer.siret = _generateSiret();
             Manufacturer.posx = faker.address.latitude();
             Manufacturer.posy = faker.address.longitude();
-            const TYPE = ["MANUFACTURER"];
             await customers.save();
         }
         return true;

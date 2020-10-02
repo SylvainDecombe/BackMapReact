@@ -78,54 +78,60 @@ const findOne = (req, res) => {
 //////////////////////////////////////////////////
 //Modification des informations d'un Manufacturer
 //////////////////////////////////////////////////
-const update = (req, res) => {
-    if (!req.body) {
+const update = async(req, res) => {
+    const id = req.body.id;
+    const body = req.body;
+    if (id) {
+        try {
+            const manufacturerToUpdate = await Manufacturer.findOne({ _id: id });
+            if (manufacturerToUpdate) {
+                delete body._id;
+                await Manufacturer.findOneAndUpdate({ _id: id }, body);
+                const updatedManufacturer = await Manufacturer.findOne({ _id: id });
+                return res.json(updatedManufacturer);
+            } else {
+                return res.status(404).send({
+                    message: 'Manufacturer not found.'
+                });
+            }
+        } catch (e) {
+            return res.status(500).send({
+                message: e
+            });
+        }
+    } else {
         return res.status(400).send({
-            message: "Les données n'ont pas été mises à jour !"
+            message: 'No ID specified.'
         });
     }
-    const id = req.params.id;
-
-    const manufacturer = Manufacturer
-        .findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-        .then(data => {
-            if (!data) {
-                res.status(404).send({
-                    message: "Impossible d'effectuer la MAJ"
-                });
-            } else res.send({ message: "Le pass CRUD a bien été MAJ !" });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Erreur de MAJ.."
-            });
-        });
 };
 
 ///////////////////////////////
 //Supression d'un Manufacturer
 ///////////////////////////////
-const deleteManufacturer = (req, res) => {
+const deleteManufacturer = async(req, res) => {
     const id = req.params.id;
-
-    const manufacturer = Manufacturer
-        .findByIdAndRemove(id, { useFindAndModify: false })
-        .then(data => {
-            if (!data) {
-                res.status(404).send({
-                    message: "Erreur s'est produit lors de la supression d'un id !"
-                });
+    if (id) {
+        try {
+            const manufacturerToDelete = await Manufacturer.findOne({ _id: id });
+            if (manufacturerToDelete) {
+                await manufacturerToDelete.delete();
+                return res.sendStatus(200);
             } else {
-                res.send({
-                    message: "La supression a été un succès !"
+                return res.status(404).send({
+                    message: 'Manufacturer not found.'
                 });
             }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Erreur, impossible de supprimer l'élément par id"
+        } catch (e) {
+            return res.status(500).send({
+                message: e
             });
+        }
+    } else {
+        return res.status(400).send({
+            message: 'No ID specified.'
         });
+    }
 };
 
 module.exports = { create, update, findAll, deleteManufacturer };
