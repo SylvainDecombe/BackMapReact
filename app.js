@@ -12,7 +12,8 @@ const dbconnect = require('./core/config');
 const auth = require('./routes/AuthRouter');
 const cust = require('./routes/CustomerRouter');
 const manu = require('./routes/ManufacturerRouter');
-//const user = require('./routes/UserRouter');
+const user = require('./routes/UserRouter');
+const { connect } = require('mongoose');
 
 dotenv.config();
 dbconnect.dbconnect();
@@ -26,8 +27,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //////////////////////////
 //Routes racines de l'API
 //////////////////////////
+app.use('/api', manu);
+app.use('/api', cust);
+app.use('/api', user);
 app.use('/api/auth', auth);
-app.use('/api', [cust, manu, user]);
 //////////////////////////////
 //Configuration port d'écoute
 //////////////////////////////
