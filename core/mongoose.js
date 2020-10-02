@@ -1,17 +1,3 @@
-//const mongoose = require('mongoose');
-
-//const dbconnnect = async() => {
-//    try {
-//        mongoose.connect(process.env.DB_CONNECT, {
-//                useNewUrlParser: true,
-//                useUnifiedTopology: true
-//            },
-//            () => console.log("Mongo ok")
-//        );
-//    } catch (error) {
-//        throw new Error('Mongo KO');
-//    }
-//}
 const db = require('../core/config');
 const faker = require('faker');
 const Manufacturer = require('../models/ManufacturerModel');

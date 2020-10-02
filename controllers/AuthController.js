@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 //Import du User Model
 ///////////////////////
 const User = require('../models/UserModel');
+const db = require('../core/mongoose');
+const userdb = db.user;
 
 ///////////////////////////////////////////////////
 //Génère un token lors de l'ajout d'un utilisateur
@@ -63,7 +65,7 @@ const register = async(req, res) => {
     if (exist) {
         return res.status(400).json({ message: 'Account already exist' })
     }
-    user.password = await encryptPassword(user.password);
+    user.motdepasse = await encryptPassword(user.motdepasse);
     const new_user = new User(user);
     await new_user.save();
     const token = await genereteToken(user._id, user.name);
@@ -75,19 +77,17 @@ const register = async(req, res) => {
 /////////////////////////////
 const login = async(req, res) => {
     try {
-        const { email, password } = req.body;
-        //const user = await User.findOne({ email });
-        const user = {email: req.body.email, password: req.body.password, role: "ADMIN"}
+        const { email, motdepasse } = req.body;
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ message: 'User does not exist' });
         }
-        //const isValid = bcrypt.compareSync(password, user.password);
-        const isValid =true;
+        const isValid = bcrypt.compareSync(motdepasse, user.motdepasse);
         if (isValid) {
             const token = await genereteToken(user._id, user.name);
             return res.status(200).json({ token: token, role: user.role })
         } else {
-            return res.status(500).json({ message: 'Credentials error'});
+            return res.status(500).json({ message: 'Credentials error' });
         }
     } catch (error) {
         if (error) {
