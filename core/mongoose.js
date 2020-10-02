@@ -32,6 +32,7 @@ exports.populateUsers = async function (res) {
             user.pays = faker.address.country();
             user.posx = faker.address.latitude();
             user.posy = faker.address.longitude();
+            user.role = _randomRole();
             await user.save();
         }
         return true;
@@ -85,10 +86,10 @@ exports.populateManufacturer = async function (res) {
     }
 };
 
-//function _randomRole() {
-//    const ROLES = ['ADMIN', 'CUSTOMER', 'USER'];
-//    return ROLES[Math.floor(Math.random() * 3)];
-//}
+function _randomRole() {
+    const ROLES = ['ADMIN', 'EDITOR', 'USER'];
+    return ROLES[Math.floor(Math.random() * 3)];
+}
 
 function _generateSiret() {
     let number = '000';
