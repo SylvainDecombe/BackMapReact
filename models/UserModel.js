@@ -4,39 +4,39 @@ const UserModel = Schema({
 
     prenom: {
         type: String,
-        required: true
+        required: false
     },
     nom: {
         type: String,
-        required: true
+        required: false
     },
     motdepasse: {
         type: String,
-        required: true
+        required: false
     },
     email: {
         type: String,
-        required: true
+        required: false
     },
     tel: {
         type: String,
-        required: true
+        required: false
     },
     adresse: {
         type: String,
-        required: true
+        required: false
     },
     postal: {
         type: Number,
-        required: true
+        required: false
     },
     ville: {
         type: String,
-        required: true
+        required: false
     },
     role: {
         type: String,
-        required: true
+        required: false
     }
 
 });

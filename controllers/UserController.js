@@ -8,10 +8,17 @@ const create = (req, res) => {
     }
 
     // Creation utilisateur
-    const user = new user({
+    const user = new User({
         nom: req.body.nom,
-        desc: req.body.desc,
-        published: req.body.published ? req.body.published : false
+        prenom: req.body.prenom,
+        motdepasse: req.body.motdepasse,
+        email: req.body.email,
+        tel: req.body.tel,
+        adresse: req.body.adresse,
+        postal: req.body.postal,
+        ville: req.body.ville,
+        role: req.body.role,
+        
     });
 
     // Sauvegarde utilisateur MongoDB
@@ -66,7 +73,7 @@ const update = (req, res) => {
     }
     const id = req.params.id;
 
-    user.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    const User = User.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
         .then(data => {
             if (!data) {
                 res.status(404).send({
@@ -85,10 +92,11 @@ const update = (req, res) => {
 const deleteUser = (req, res) => {
     const id = req.params.id;
 
-    usesr.findByIdAndRemove(id, { useFindAndModify: false })
+    const user = User.findByIdAndRemove(id, { useFindAndModify: false })
         .then(data => {
             if (!data) {
                 res.status(404).send({
+                    log: data,
                     message: "Erreur s'est produit lors de la supression d'un id !"
                 });
             } else {
