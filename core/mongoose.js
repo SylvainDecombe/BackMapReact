@@ -14,11 +14,11 @@
 //}
 const db = require('../core/config');
 const faker = require('faker');
-const Collaborator = require('../models/ManufacturerController');
+const Manufacturer = require('../models/ManufacturerModel');
 const User = require('../models/UserModel');
 const Customer = require('../models/CustomerModel');
 
-exports.populateUsers = async function (res) {
+exports.populateUsers = async function(res) {
     try {
         for (let i = 0; i < 100; i++) {
             const user = new User();
@@ -37,11 +37,11 @@ exports.populateUsers = async function (res) {
         }
         return true;
     } catch (e) {
-        return res.status(500).json({message: e});
+        return res.status(500).json({ message: e });
     }
 };
 
-exports.populateCustomers = async function (res) {
+exports.populateCustomers = async function(res) {
     try {
         for (let i = 0; i < 100; i++) {
             const customers = new Customers();
@@ -59,11 +59,11 @@ exports.populateCustomers = async function (res) {
         }
         return true;
     } catch (e) {
-        return res.status(500).json({message: e});
+        return res.status(500).json({ message: e });
     }
 };
 
-exports.populateManufacturer = async function (res) {
+exports.populateManufacturer = async function(res) {
     try {
         for (let i = 0; i < 100; i++) {
             const Manufacturer = new Manufacturer();
@@ -82,7 +82,7 @@ exports.populateManufacturer = async function (res) {
         }
         return true;
     } catch (e) {
-        return res.status(500).json({message: e});
+        return res.status(500).json({ message: e });
     }
 };
 
