@@ -2,29 +2,29 @@ const { Schema, model } = require('mongoose');
 
 const UserModel = Schema({
 
-    nom: {
+  nom: {
         type: String,
-        required: true
+        required: false
     },
     motdepasse: {
         type: String,
-        required: true
+        required: false
     },
     email: {
         type: String,
-        required: true
+        required: false
     },
     tel: {
         type: String,
-        required: true
+        required: false
     },
     adresse: {
         type: String,
-        required: true
+        required: false
     },
     postal: {
         type: Number,
-        required: true
+        required: false
     },
     ville: {
         type: String,
@@ -36,11 +36,11 @@ const UserModel = Schema({
 	},
 	posx: {
         type: String,
-        required: true
+        required: false
     },
     posy: {
         type: String,
-        required: true
+        required: false
     }
 
 });
