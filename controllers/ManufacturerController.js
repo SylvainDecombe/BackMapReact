@@ -1,13 +1,18 @@
 const db = require('../core/mongoose');
+
+///////////////////////////////
+//Import du Manufacturer Model
+///////////////////////////////
 const Manufacturer = require('../models/ManufacturerModel');
 
+/////////////////////////////
+//Création d'un Manufacturer
+/////////////////////////////
 const create = (req, res) => {
     if (!req.body.nom) {
         res.status(400).send({ message: "Le champ le doit pas être vide !" });
         return;
     }
-
-    // Creation utilisateur
     const manufacturer = new Manufacturer({
         nom: req.body.nom,
         email: req.body.email,
@@ -21,7 +26,7 @@ const create = (req, res) => {
         posy: req.body.posy
     });
 
-    // Sauvegarde utilisateur MongoDB
+    // Sauvegarde Manufacturer MongoDB
     manufacturer
         .save(manufacturer)
         .then(data => {
@@ -34,6 +39,9 @@ const create = (req, res) => {
         });
 };
 
+/////////////////////////////////////////
+//Récupération de tous les Manufacturers
+/////////////////////////////////////////
 const findAll = (req, res) => {
 
     const manufacturer = Manufacturer
@@ -48,7 +56,10 @@ const findAll = (req, res) => {
         });
 };
 
-//Recherche par id
+
+//////////////////////////////////////////////
+//Récupération d'un Manufacturer selon son id
+//////////////////////////////////////////////
 const findOne = (req, res) => {
     const id = req.params.id;
 
@@ -64,8 +75,9 @@ const findOne = (req, res) => {
         })
 };
 
-//MAJ par id
-
+//////////////////////////////////////////////////
+//Modification des informations d'un Manufacturer
+//////////////////////////////////////////////////
 const update = (req, res) => {
     if (!req.body) {
         return res.status(400).send({
@@ -90,7 +102,9 @@ const update = (req, res) => {
         });
 };
 
-//Supression CRUD par ID
+///////////////////////////////
+//Supression d'un Manufacturer
+///////////////////////////////
 const deleteManufacturer = (req, res) => {
     const id = req.params.id;
 
@@ -113,21 +127,5 @@ const deleteManufacturer = (req, res) => {
             });
         });
 };
-
-//Tous supprimer
-const deleteAll = (req, res) => {
-    manufacturer.deleteMany({})
-        .then(data => {
-            res.send({
-                message: "{data.deletedCount} Tous a été supprimé avec succès !"
-            });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || "Erreur, impossible de supprimer tous les élements !"
-            });
-        });
-};
-
 
 module.exports = { create, update, findAll, deleteManufacturer };

@@ -1,13 +1,18 @@
 const db = require('../core/mongoose');
+
+///////////////////////
+//Import du User Model
+///////////////////////
 const User = require('../models/UserModel');
 
+/////////////////////
+//Création d'un User
+/////////////////////
 const create = (req, res) => {
     if (!req.body.nom) {
         res.status(400).send({ message: "Le champ le doit pas être vide !" });
         return;
     }
-
-    // Creation utilisateur
     const user = new User({
         nom: req.body.nom,
         prenom: req.body.prenom,
@@ -18,7 +23,7 @@ const create = (req, res) => {
         postal: req.body.postal,
         ville: req.body.ville,
         role: req.body.role,
-        
+
     });
 
     // Sauvegarde utilisateur MongoDB
@@ -34,6 +39,9 @@ const create = (req, res) => {
         });
 };
 
+/////////////////////////////////
+//Récupération de tous les Users
+/////////////////////////////////
 const findAll = (req, res) => {
 
     const user = User
@@ -48,11 +56,14 @@ const findAll = (req, res) => {
         });
 };
 
-//Recherche par id
+//////////////////////////////////////
+//Récupération d'un User selon son id
+//////////////////////////////////////
 const findOne = (req, res) => {
     const id = req.params.id;
 
-    user.findById(id)
+    const user = User
+        .findById(id)
         .then(data => {
             if (!data)
                 res.status(404).send({ message: "Aucun résultat par ID ! + id" });
@@ -63,8 +74,9 @@ const findOne = (req, res) => {
         })
 };
 
-//MAJ par id
-
+//////////////////////////////////////////
+//Modification des informations d'un User
+//////////////////////////////////////////
 const update = (req, res) => {
     if (!req.body) {
         return res.status(400).send({
@@ -73,7 +85,8 @@ const update = (req, res) => {
     }
     const id = req.params.id;
 
-    const User = User.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    const user = User
+        .findByIdAndUpdate(id, req.body, { useFindAndModify: false })
         .then(data => {
             if (!data) {
                 res.status(404).send({
@@ -88,11 +101,14 @@ const update = (req, res) => {
         });
 };
 
-//Supression CRUD par ID
+///////////////////////
+//Supression d'un User
+///////////////////////
 const deleteUser = (req, res) => {
     const id = req.params.id;
 
-    const user = User.findByIdAndRemove(id, { useFindAndModify: false })
+    const user = User
+        .findByIdAndRemove(id, { useFindAndModify: false })
         .then(data => {
             if (!data) {
                 res.status(404).send({
@@ -108,21 +124,6 @@ const deleteUser = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message: "Erreur, impossible de supprimer l'élément par id"
-            });
-        });
-};
-
-//Tous supprimer
-const deleteAll = (req, res) => {
-    user.deleteMany({})
-        .then(data => {
-            res.send({
-                message: "{data.deletedCount} Tous a été supprimé avec succès !"
-            });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || "Erreur, impossible de supprimer tous les élements !"
             });
         });
 };

@@ -1,6 +1,10 @@
 const { response, json } = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
+///////////////////////
+//Import du User Model
+///////////////////////
 const User = require('../models/UserModel');
 
 ///////////////////////////////////////////////////
@@ -90,4 +94,7 @@ const login = async(req, res) => {
     }
 }
 
+////////////////////////////////////////////////////////////
+//Export des méthodes pour les récupérer dans le UserRouter
+////////////////////////////////////////////////////////////
 module.exports = {  register, login, validateToken };

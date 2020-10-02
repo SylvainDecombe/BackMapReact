@@ -1,14 +1,19 @@
 const { json } = require('express');
-const Customer = require('../models/CustomerModel');
 const db = require('../core/mongoose');
 
+///////////////////////////
+//Import du Customer Model
+///////////////////////////
+const Customer = require('../models/CustomerModel');
 
+/////////////////////////
+//Création d'un Customer
+/////////////////////////
 const create = (req, res) => {
     if (!req.body.nom) {
         res.status(400).send({ message: "Le champ le doit pas être vide !" });
         return;
     }
-    // Creation utilisateur
     const client = new Customer({
         prenom: req.body.prenom,
         nom: req.body.nom,
@@ -21,7 +26,7 @@ const create = (req, res) => {
         posy: req.body.posy
     });
 
-    // Sauvegarde utilisateur MongoDB
+    // Sauvegarde Customer MongoDB
     client
         .save(client)
         .then(data => {
@@ -34,6 +39,9 @@ const create = (req, res) => {
         });
 };
 
+/////////////////////////////////////
+//Récupération de tous les Customers
+/////////////////////////////////////
 const findAll = (req, res) => {
 
     const client = Customer
@@ -48,11 +56,14 @@ const findAll = (req, res) => {
         });
 };
 
-//Recherche par id
+//////////////////////////////////////////
+//Récupération d'un Customer selon son id
+//////////////////////////////////////////
 const findOne = (req, res) => {
     const id = req.params.id;
 
-    client.findById(id)
+    const client = Customer
+        .findById(id)
         .then(data => {
             if (!data)
                 res.status(404).send({ message: "Aucun résultat par ID ! + id" });
@@ -63,8 +74,9 @@ const findOne = (req, res) => {
         })
 };
 
-//MAJ par id
-
+//////////////////////////////////////////////
+//Modification des informations d'un Customer
+//////////////////////////////////////////////
 const update = (req, res) => {
     if (!req.body) {
         return res.status(400).send({
@@ -73,7 +85,8 @@ const update = (req, res) => {
     }
     const id = req.params.id;
 
-    client.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    const client = Customer
+        .findByIdAndUpdate(id, req.body, { useFindAndModify: false })
         .then(data => {
             if (!data) {
                 res.status(404).send({
@@ -88,11 +101,14 @@ const update = (req, res) => {
         });
 };
 
-//Supression CRUD par ID
+///////////////////////////
+//Supression d'un Customer
+///////////////////////////
 const deleteCustomer = (req, res) => {
     const id = req.params.id;
 
-    client.findByIdAndRemove(id, { useFindAndModify: false })
+    const client = Customer
+        .findByIdAndRemove(id, { useFindAndModify: false })
         .then(data => {
             if (!data) {
                 res.status(404).send({
@@ -110,20 +126,5 @@ const deleteCustomer = (req, res) => {
             });
         });
 }
-
-//Tous supprimer
-const deleteAll = (req, res) => {
-    client.deleteMany({})
-        .then(data => {
-            res.send({
-                message: "{data.deletedCount} Tous a été supprimé avec succès !"
-            });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || "Erreur, impossible de supprimer tous les élements !"
-            });
-        });
-};
 
 module.exports = { create, update, findAll, deleteCustomer };
