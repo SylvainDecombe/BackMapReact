@@ -13,6 +13,7 @@ const auth = require('./routes/AuthRouter');
 const cust = require('./routes/CustomerRouter');
 const manu = require('./routes/ManufacturerRouter');
 const user = require('./routes/UserRouter');
+const { connect } = require('mongoose');
 
 dotenv.config();
 dbconnect.dbconnect();
